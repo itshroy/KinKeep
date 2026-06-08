@@ -1,5 +1,7 @@
 Kinkeep is a Flutter-based medicine reminder and tracking application.
+
 Features: Add Medicines, Edit Medicine, Delete Medicines, Mark Medicine as Taken, Track daily progress, Local storage using Shared Preferences, Clean and modern UI.
+
 Tech Stack: Flutter, Dart, Shared Preferences.
 
 Screenshots: <img width="1902" height="908" alt="Screenshot 2026-06-08 174055" src="https://github.com/user-attachments/assets/e283b830-47b7-4746-afd9-79b69e3353fe" />
