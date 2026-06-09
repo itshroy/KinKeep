@@ -2,6 +2,7 @@ import 'add_medicine_screen.dart';
 import 'package:flutter/material.dart';
 import '../models/medicine.dart';
 import '../services/medicine_storage.dart';
+import '../services/streak_storage.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -13,6 +14,8 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   List<Medicine> medicines = [];
 
+  int streak = 0;
+
   bool isLoading = true;
 
   @override
@@ -23,6 +26,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   Future<void> loadMedicines() async {
     medicines = await MedicineStorage.getMedicines();
+
+    streak = await StreakStorage.getStreak();
 
     setState(() {
       isLoading = false;
@@ -293,7 +298,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     child: statCard(
                       icon: Icons.local_fire_department,
                       title: "Streak",
-                      value: "5",
+                      value: "$streak",
                       color: Colors.orange,
                     ),
                   ),
