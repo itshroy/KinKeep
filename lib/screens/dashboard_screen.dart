@@ -638,6 +638,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
                   await MedicineStorage.updateMedicine(index, medicine);
 
+                  bool allTaken = medicines.every((m) => m.isTaken);
+
+                  if (allTaken) {
+                    streak++;
+
+                    await StreakStorage.saveStreak(streak);
+
+                    print("New Streak = $streak");
+                  }
+
                   loadMedicines();
                 },
 
