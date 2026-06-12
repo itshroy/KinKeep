@@ -641,11 +641,22 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   bool allTaken = medicines.every((m) => m.isTaken);
 
                   if (allTaken) {
-                    streak++;
+                    String today = DateTime.now().toString().split(' ')[0];
 
-                    await StreakStorage.saveStreak(streak);
+                    String? lastDate =
+                        await StreakStorage.getLastCompletedDate();
 
-                    print("New Streak = $streak");
+                    if (lastDate != today) {
+                      streak++;
+
+                      await StreakStorage.saveStreak(streak);
+
+                      await StreakStorage.saveLastCompletedDate(today);
+
+                      print("New Streak = $streak");
+                    } else {
+                      print("Streak already counted today");
+                    }
                   }
 
                   loadMedicines();
