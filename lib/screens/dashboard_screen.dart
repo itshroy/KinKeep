@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../models/medicine.dart';
 import '../services/medicine_storage.dart';
 import '../services/streak_storage.dart';
+import 'schedule_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -43,6 +44,28 @@ class _DashboardScreenState extends State<DashboardScreen> {
     double progress = totalMedicines == 0 ? 0 : takenMedicines / totalMedicines;
     return Scaffold(
       backgroundColor: const Color(0xFFF5F7FB),
+      appBar: AppBar(
+        backgroundColor: const Color(0xFFF5F7FB),
+        elevation: 0,
+
+        title: const Text(
+          "KinKeep",
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+        ),
+
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.calendar_month, color: Colors.black),
+
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const ScheduleScreen()),
+              );
+            },
+          ),
+        ],
+      ),
 
       floatingActionButton: Container(
         width: 70,
