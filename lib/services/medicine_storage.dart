@@ -48,4 +48,20 @@ class MedicineStorage {
 
     await prefs.setStringList(key, medicines);
   }
+
+  static Future<void> resetAllMedicines() async {
+    List<Medicine> medicines = await getMedicines();
+
+    for (var medicine in medicines) {
+      medicine.isTaken = false;
+    }
+
+    final prefs = await SharedPreferences.getInstance();
+
+    List<String> updatedMedicines = medicines
+        .map((medicine) => jsonEncode(medicine.toJson()))
+        .toList();
+
+    await prefs.setStringList(key, updatedMedicines);
+  }
 }

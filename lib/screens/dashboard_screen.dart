@@ -26,6 +26,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Future<void> loadMedicines() async {
+    String today = DateTime.now().toString().split(' ')[0];
+
+    String? lastCompletedDate = await StreakStorage.getLastCompletedDate();
+
+    if (lastCompletedDate != null && lastCompletedDate != today) {
+      await MedicineStorage.resetAllMedicines();
+    }
+
     medicines = await MedicineStorage.getMedicines();
 
     streak = await StreakStorage.getStreak();
