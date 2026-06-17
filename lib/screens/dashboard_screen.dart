@@ -15,6 +15,8 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   List<Medicine> medicines = [];
 
+  Medicine? nextMedicine;
+
   int streak = 0;
 
   bool isLoading = true;
@@ -35,6 +37,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
     }
 
     medicines = await MedicineStorage.getMedicines();
+
+    List<Medicine> pendingMedicines = medicines
+        .where((m) => !m.isTaken)
+        .toList();
+
+    if (pendingMedicines.isNotEmpty) {
+      nextMedicine = pendingMedicines.first;
+    } else {
+      nextMedicine = null;
+    }
 
     streak = await StreakStorage.getStreak();
 
@@ -246,7 +258,85 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ),
 
               const SizedBox(height: 30),
+              if (nextMedicine != null)
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(20),
 
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(24),
+
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.05),
+                        blurRadius: 15,
+                        offset: const Offset(0, 8),
+                      ),
+                    ],
+                  ),
+
+                  child: Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(14),
+
+                        decoration: BoxDecoration(
+                          color: Colors.orange.withValues(alpha: 0.15),
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+
+                        child: const Icon(
+                          Icons.alarm,
+                          color: Colors.orange,
+                          size: 30,
+                        ),
+                      ),
+
+                      const SizedBox(width: 16),
+
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+
+                          children: [
+                            const Text(
+                              "Next Medicine",
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 14,
+                              ),
+                            ),
+
+                            const SizedBox(height: 4),
+
+                            Text(
+                              nextMedicine!.name,
+                              style: const TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+
+                            Text(
+                              nextMedicine!.dosage,
+                              style: const TextStyle(color: Colors.grey),
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      Text(
+                        nextMedicine!.time,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              const SizedBox(height: 24),
               // Progress Card
               Container(
                 width: double.infinity,
