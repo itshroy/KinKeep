@@ -22,8 +22,10 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
   Future<void> loadMedicines() async {
     medicines = await MedicineStorage.getMedicines();
     medicines.sort((a, b) {
-      DateTime timeA = DateFormat.jm().parse(a.time);
-      DateTime timeB = DateFormat.jm().parse(b.time);
+      DateTime timeA = DateFormat("h:mm a").parse(a.time);
+      DateTime timeB = DateFormat("h:mm a").parse(b.time);
+
+      print("Schedule medicines = ${medicines.length}");
 
       return timeA.compareTo(timeB);
     });
