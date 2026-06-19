@@ -4,6 +4,7 @@ import '../models/medicine.dart';
 import '../services/medicine_storage.dart';
 import '../services/streak_storage.dart';
 import 'schedule_screen.dart';
+import 'profile_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -18,6 +19,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Medicine? nextMedicine;
 
   int streak = 0;
+
+  int selectedIndex = 0;
 
   bool isLoading = true;
 
@@ -146,15 +149,27 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ),
 
         child: BottomNavigationBar(
-          currentIndex: 0,
+          currentIndex: selectedIndex,
 
-          backgroundColor: Colors.transparent,
+          onTap: (index) {
+            setState(() {
+              selectedIndex = index;
+            });
 
-          elevation: 0,
+            if (index == 1) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const ScheduleScreen()),
+              );
+            }
 
-          selectedItemColor: const Color(0xFF2563EB),
-
-          unselectedItemColor: Colors.grey,
+            if (index == 2) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const ProfileScreen()),
+              );
+            }
+          },
 
           items: const [
             BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
