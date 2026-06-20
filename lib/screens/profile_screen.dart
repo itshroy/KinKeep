@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../services/streak_storage.dart';
 import '../services/medicine_storage.dart';
+import '../services/profile_storage.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -42,6 +43,7 @@ Widget profileCard(IconData icon, String title, String value, Color color) {
 class _ProfileScreenState extends State<ProfileScreen> {
   int streak = 0;
   int takenCount = 0;
+  String userName = "Himanshi";
 
   @override
   void initState() {
@@ -56,7 +58,45 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     takenCount = medicines.where((m) => m.isTaken).length;
 
+    userName = await ProfileStorage.getName();
+
     setState(() {});
+  }
+
+  Future<void> showEditNameDialog() async {
+    TextEditingController controller = TextEditingController(text: userName);
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Edit Name"),
+
+        content: TextField(
+          controller: controller,
+          decoration: const InputDecoration(hintText: "Enter your name"),
+        ),
+
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text("Cancel"),
+          ),
+
+          ElevatedButton(
+            onPressed: () async {
+              await ProfileStorage.saveName(controller.text);
+
+              setState(() {
+                userName = controller.text;
+              });
+
+              Navigator.pop(context);
+            },
+            child: const Text("Save"),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -72,9 +112,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
             const SizedBox(height: 16),
 
-            const Text(
-              "Himanshi",
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            Text(
+              userName,
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+
+            const SizedBox(height: 10),
+
+            ElevatedButton.icon(
+              onPressed: () {
+                showEditNameDialog();
+              },
+              icon: const Icon(Icons.edit),
+              label: const Text("Edit Name"),
             ),
 
             const SizedBox(height: 30),
