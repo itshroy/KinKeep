@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../services/streak_storage.dart';
 import '../services/medicine_storage.dart';
 import '../services/profile_storage.dart';
+import '../services/theme_storage.dart';
+import '../main.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -44,6 +46,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   int streak = 0;
   int takenCount = 0;
   String userName = "Himanshi";
+  bool isDarkMode = false;
 
   @override
   void initState() {
@@ -59,6 +62,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     takenCount = medicines.where((m) => m.isTaken).length;
 
     userName = await ProfileStorage.getName();
+
+    isDarkMode = await ThemeStorage.getTheme();
 
     setState(() {});
   }
@@ -126,7 +131,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
               icon: const Icon(Icons.edit),
               label: const Text("Edit Name"),
             ),
+            const SizedBox(height: 25),
 
+            SwitchListTile(
+              title: const Text(
+                "Dark Mode",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              secondary: const Icon(Icons.dark_mode),
+              value: isDarkMode,
+              onChanged: (value) async {
+                KinKeepApp.of(context)?.changeTheme(value);
+              },
+            ),
             const SizedBox(height: 30),
 
             profileCard(
