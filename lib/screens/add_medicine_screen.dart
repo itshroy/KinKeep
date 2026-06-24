@@ -25,6 +25,23 @@ class _AddMedicineScreenState extends State<AddMedicineScreen> {
     if (widget.medicine != null) {
       medicineController.text = widget.medicine!.name;
       dosageController.text = widget.medicine!.dosage;
+
+      final parts = widget.medicine!.time.split(' ');
+
+      final timeParts = parts[0].split(':');
+
+      int hour = int.parse(timeParts[0]);
+      int minute = int.parse(timeParts[1]);
+
+      if (parts[1] == "PM" && hour != 12) {
+        hour += 12;
+      }
+
+      if (parts[1] == "AM" && hour == 12) {
+        hour = 0;
+      }
+
+      selectedTime = TimeOfDay(hour: hour, minute: minute);
     }
   }
 
