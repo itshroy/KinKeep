@@ -47,6 +47,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   int takenCount = 0;
   String userName = "Himanshi";
   bool isDarkMode = false;
+  int longestStreak = 0;
 
   @override
   void initState() {
@@ -64,6 +65,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     userName = await ProfileStorage.getName();
 
     isDarkMode = await ThemeStorage.getTheme();
+
+    longestStreak = await StreakStorage.getLongestStreak();
 
     setState(() {});
   }
@@ -154,6 +157,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
 
             const SizedBox(height: 15),
+
+            const SizedBox(height: 15),
+
+            profileCard(
+              Icons.emoji_events,
+              "Longest Streak",
+              "$longestStreak Days",
+              Colors.purple,
+            ),
 
             profileCard(
               Icons.medication,

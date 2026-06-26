@@ -787,6 +787,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
                       await StreakStorage.saveStreak(streak);
 
+                      int longest = await StreakStorage.getLongestStreak();
+
+                      if (streak > longest) {
+                        await StreakStorage.saveLongestStreak(streak);
+                      }
+
                       await StreakStorage.saveLastCompletedDate(today);
 
                       print("New Streak = $streak");

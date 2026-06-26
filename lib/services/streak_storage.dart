@@ -2,6 +2,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class StreakStorage {
   static const String streakKey = "streak";
+  static const String longestStreakKey = "longestStreak";
   static const String lastCompletedDateKey = "lastCompletedDate";
 
   static Future<void> saveStreak(int streak) async {
@@ -26,5 +27,17 @@ class StreakStorage {
     final prefs = await SharedPreferences.getInstance();
 
     return prefs.getString(lastCompletedDateKey);
+  }
+
+  static Future<void> saveLongestStreak(int streak) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    await prefs.setInt(longestStreakKey, streak);
+  }
+
+  static Future<int> getLongestStreak() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    return prefs.getInt(longestStreakKey) ?? 0;
   }
 }
