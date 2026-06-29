@@ -4,6 +4,7 @@ import '../services/medicine_storage.dart';
 import '../services/profile_storage.dart';
 import '../services/theme_storage.dart';
 import '../main.dart';
+import 'settings_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -172,6 +173,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
               "Medicines Taken",
               "$takenCount",
               Colors.green,
+            ),
+            SizedBox(
+              width: double.infinity,
+
+              child: ElevatedButton.icon(
+                icon: const Icon(Icons.settings),
+
+                label: const Text("Settings"),
+
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const SettingsScreen()),
+                  );
+                },
+              ),
             ),
           ],
         ),
