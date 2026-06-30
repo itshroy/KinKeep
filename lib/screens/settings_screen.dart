@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 
-class SettingsScreen extends StatelessWidget {
+class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
+
+  @override
+  State<SettingsScreen> createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends State<SettingsScreen> {
+  bool isDarkMode = false;
 
   Widget settingsTile({
     required IconData icon,
@@ -34,10 +41,22 @@ class SettingsScreen extends StatelessWidget {
           children: [
             settingsTile(icon: Icons.person, title: "Edit Name", onTap: () {}),
 
-            settingsTile(
-              icon: Icons.dark_mode,
-              title: "Dark Mode",
-              onTap: () {},
+            Card(
+              elevation: 2,
+              margin: const EdgeInsets.symmetric(vertical: 8),
+              child: SwitchListTile(
+                secondary: const Icon(Icons.dark_mode),
+                title: const Text(
+                  "Dark Mode",
+                  style: TextStyle(fontWeight: FontWeight.w500),
+                ),
+                value: isDarkMode,
+                onChanged: (value) {
+                  setState(() {
+                    isDarkMode = value;
+                  });
+                },
+              ),
             ),
 
             settingsTile(
