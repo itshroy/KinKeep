@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../services/theme_storage.dart';
+import '../main.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -9,6 +11,17 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   bool isDarkMode = false;
+
+  @override
+  void initState() {
+    super.initState();
+    loadTheme();
+  }
+
+  Future<void> loadTheme() async {
+    isDarkMode = await ThemeStorage.getTheme();
+    setState(() {});
+  }
 
   Widget settingsTile({
     required IconData icon,
@@ -44,18 +57,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
             Card(
               elevation: 2,
               margin: const EdgeInsets.symmetric(vertical: 8),
-              child: SwitchListTile(
-                secondary: const Icon(Icons.dark_mode),
+              child: ListTile(
+                leading: const Icon(Icons.dark_mode),
                 title: const Text(
                   "Dark Mode",
                   style: TextStyle(fontWeight: FontWeight.w500),
                 ),
-                value: isDarkMode,
-                onChanged: (value) {
-                  setState(() {
-                    isDarkMode = value;
-                  });
-                },
+                trailing: Switch(
+                  value: isDarkMode,
+                  onChanged: (value) {
+                    setState(() {
+                      isDarkMode = value;
+                    });
+
+                    KinKeepApp.of(context)?.changeTheme(value);
+                  },
+                ),
               ),
             ),
 
