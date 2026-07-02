@@ -40,4 +40,9 @@ class StreakStorage {
 
     return prefs.getInt(longestStreakKey) ?? 0;
   }
+
+  static Future<void> resetStreak() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove("streak");
+  }
 }

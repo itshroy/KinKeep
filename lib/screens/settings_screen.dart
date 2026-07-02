@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import '../services/theme_storage.dart';
 import '../main.dart';
+import '../services/medicine_storage.dart';
+import '../services/streak_storage.dart';
+import '../services/profile_storage.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -21,6 +24,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Future<void> loadTheme() async {
     isDarkMode = await ThemeStorage.getTheme();
     setState(() {});
+  }
+
+  Future<void> resetAllData() async {
+    await MedicineStorage.clearAllMedicines();
+    await StreakStorage.resetStreak();
+    await ProfileStorage.resetName();
+
+    if (!mounted) return;
+
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text("All data has been reset.")));
   }
 
   Widget settingsTile({
@@ -80,7 +95,47 @@ class _SettingsScreenState extends State<SettingsScreen> {
               icon: Icons.delete,
               color: Colors.red,
               title: "Reset All Data",
-              onTap: () {},
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: const Text("Reset App"),
+                    content: const Text(
+                      "This will delete all medicines, streak and profile data. Continue?",
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Text("Cancel"),
+                      ),
+
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.red,
+                        ),
+                        onPressed: () async {
+                          await MedicineStorage.clearAllMedicines();
+                          await StreakStorage.resetStreak();
+                          await ProfileStorage.resetName();
+
+                          if (!mounted) return;
+
+                          Navigator.pop(context);
+
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text("All data has been reset."),
+                            ),
+                          );
+                        },
+                        child: const Text("Reset"),
+                      ),
+                    ],
+                  ),
+                );
+              },
             ),
 
             settingsTile(

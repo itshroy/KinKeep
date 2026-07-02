@@ -12,4 +12,9 @@ class ProfileStorage {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString(nameKey) ?? "Himanshi";
   }
+
+  static Future<void> resetName() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove("username");
+  }
 }

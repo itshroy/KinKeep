@@ -64,4 +64,9 @@ class MedicineStorage {
 
     await prefs.setStringList(key, updatedMedicines);
   }
+
+  static Future<void> clearAllMedicines() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(key);
+  }
 }
